@@ -9,29 +9,31 @@ import java.util.HashMap;
  */
 public class DistanceVector implements Serializable{
     private Node owner;
-    private HashMap<Node, Double> links;
+    private HashMap<Node, Cost> links;
 
-    public DistanceVector(){
-        links = new HashMap<Node, Double>();
+    public DistanceVector(String iP, int port){
+        this.owner = new Node(iP, port);
+        links = new HashMap<Node, Cost>();
     }
+
+    public Node getOwner(){ return owner;}
 
     /*Create a new node and add a link to that node*/
-    public void addLink(String iP, int port, Double weight){
-        Node next = new Node(iP, port);
-        //if the link exists, update it
-        for(Node n : links.keySet()){
-            if(n.getiP().equals(next.getiP())){
-                links.remove(n);
-                links.put(next, weight);
-                return;
-            }
-        }
-        this.links.put(next, weight);
+    public void addLink(String iP, int port, Cost weight){
+        Node n = new Node(iP, port);
+        this.links.put(n, weight);
     }
 
-    class Cost{
-        boolean deleted;
-        int weight;
+    /*returns true on success and false if no link exists*/
+    public boolean restoreLink(String iP, int port){
+        Node search = new Node(iP, port);
+        for(Node n : links.keySet()){
+            if(n.equals(search)){
+                links.get(n).restore();
+                return true;
+            }
+        }
+        return false;
     }
 
 
