@@ -21,10 +21,10 @@ public class Host {
         this.iP = iP;
     }
 
-    public 
+    public
 
     public void start(){
-
+    //dddd
     }
     /*
     * Thread to listen for updates from other hosts
