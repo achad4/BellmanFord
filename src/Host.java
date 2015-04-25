@@ -1,15 +1,21 @@
+import javafx.util.Pair;
+
 import javax.xml.crypto.Data;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 /**
  * Avi Chad-Friedman
  * ajc2212
  */
+import java.util.Date;
 public class Host {
-    private DistanceVector dv;
+    private DistanceVector prevDv;
+    private DistanceVector curDv;
+    private ArrayList<Pair<Date, DistanceVector> vectors;
     private int portNumber;
     private String iP;
     private DatagramSocket serverSock;
@@ -21,10 +27,16 @@ public class Host {
         this.iP = iP;
     }
 
-    public
+    public void init(){
+        int port = 4000;
+        for(int i = 0; i<4; i++){
+            curDv.addLink("localhost", port + i, i);
+        }
+    }
 
-    public void start(){
-    //dddd
+    public void linkUp(String iP, int portNumber){
+        //Double oldWeight = prevDv.get();
+        //curDv.addLink();
     }
     /*
     * Thread to listen for updates from other hosts
@@ -54,5 +66,7 @@ public class Host {
                 e.printStackTrace();
             }
         }
+
+
     }
 }
