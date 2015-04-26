@@ -19,17 +19,21 @@ public class DistanceVector implements Serializable{
     public Node getOwner(){ return owner;}
 
     /*Create a new node and add a link to that node*/
-    public void addLink(String iP, int port, Cost weight){
-        Node n = new Node(iP, port);
-        this.links.put(n, weight);
+    public void addLink(Node n, int weight){
+        Cost c = new Cost(weight, true);
+        this.links.put(n, c);
     }
 
     /*returns true on success and false if no link exists*/
-    public boolean restoreLink(String iP, int port){
+    public boolean updateLink(String iP, int port, int flag){
         Node search = new Node(iP, port);
         for(Node n : links.keySet()){
             if(n.equals(search)){
-                links.get(n).restore();
+                if(flag == NetworkMessage.LINK_UP) {
+                    links.get(n).restore();
+                }else{
+                    links.get(n).destroy();
+                }
                 return true;
             }
         }
