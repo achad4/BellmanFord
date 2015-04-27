@@ -25,4 +25,10 @@ public class Node implements Serializable, Comparable<Node>{
         return -1;
     }
 
+    @Override
+    //Hash the nodes by IP address only
+    public int hashCode(){
+        return this.iP.hashCode() + this.port;
+    }
+
 }

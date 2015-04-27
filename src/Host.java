@@ -1,29 +1,26 @@
+import com.sun.xml.internal.bind.v2.TODO;
 import javafx.util.Pair;
 
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Avi Chad-Friedman
  * ajc2212
  */
-import java.util.Date;
-import java.util.Scanner;
 
 public class Host {
     private DistanceVector curDv;
     private ArrayList<Pair<Date, DistanceVector>> vectors;
     private DatagramSocket serverSock;
     private DatagramSocket clientSocket;
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
     private int timeout;
 
 
     public Host(int portNumber, int timeout){
         try {
+            this.vectors = new ArrayList<Pair<Date, DistanceVector>>();
             this.curDv = new DistanceVector(InetAddress.getLocalHost().getHostAddress(), portNumber);
             this.timeout = timeout;
             serverSock = new DatagramSocket(curDv.getOwner().getPort());
@@ -35,7 +32,11 @@ public class Host {
         }
     }
 
-    /*Inititializes distance vector*/
+    public DistanceVector getCurDv(){
+        return curDv;
+    }
+
+    /*Inititializes distance vector and start the tasks*/
     public void start() throws NumberFormatException, FileNotFoundException{
         Scanner scan = new Scanner(new File("config.txt"));
         String[] info;
@@ -44,10 +45,12 @@ public class Host {
             int portNumber = Integer.parseInt(info[0].split(":")[1]);
             Node n = new Node(iP, portNumber);
             int weight = Integer.parseInt(info[1]);
-            this.curDv.addLink(n, weight);
+            this.curDv.put(n, n, weight);
         }
         Server serverThread = new Server();
         serverThread.start();
+        HeartBeat heartBeatThread = new HeartBeat();
+        heartBeatThread.start();
     }
 
     /*Restore link and alert neighbor*/
@@ -67,7 +70,7 @@ public class Host {
         try{
             InetAddress address = InetAddress.getByName(iP);
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream(5000);
-            out = new ObjectOutputStream(new BufferedOutputStream(byteStream));
+            ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(byteStream));
             out.flush();
             out.writeObject(message);
             out.flush();
@@ -134,8 +137,44 @@ public class Host {
                 linkDown(iP, portNumber);
             }
         }
+    }
 
-
-
+    class HeartBeat extends Thread{
+        class BellmanFord extends TimerTask {
+            public void run(){
+                //send DV to all neighbors
+                for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : curDv){
+                    send(new NetworkMessage(curDv), e.getKey().getiP(), e.getKey().getPort());
+                }
+                //TODO: clean this shit up!!!
+                //update distance vector
+                for(Pair<Date, DistanceVector> pair : vectors){
+                    DistanceVector distanceVector = pair.getValue();
+                    for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : distanceVector){
+                        Pair<Node, Cost> p;
+                        //if the host has a entry for this node
+                        Node dest = e.getKey();
+                        Node hop = pair.getValue().getOwner();
+                        double distToHop = curDv.get(hop).getValue().getWeight();
+                        double distFromHop = distanceVector.get(dest).getValue().getWeight();
+                        Pair<Node, Cost> curEntry;
+                        if((curEntry = curDv.get(dest)) != null){
+                            double curWeight = curEntry.getValue().getWeight();
+                            if(curWeight > distFromHop + distToHop){
+                                curDv.put(dest, hop, distFromHop + distToHop);
+                            }
+                        }
+                        else{
+                            curDv.put(dest, hop, distFromHop + distToHop);
+                        }
+                    }
+                }
+            }
+        }
+        public void run(){
+            //send heart beat every HEART_RATE seconds
+            Timer timer = new Timer();
+            timer.schedule(new BellmanFord(), 0, 1000*timeout);
+        }
     }
 }
