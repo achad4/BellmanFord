@@ -1,4 +1,3 @@
-import com.sun.xml.internal.bind.v2.TODO;
 import javafx.util.Pair;
 
 import java.io.*;
@@ -38,11 +37,14 @@ public class Host {
 
     /*Inititializes distance vector and start the tasks*/
     public void start() throws NumberFormatException, FileNotFoundException{
-        Scanner scan = new Scanner(new File("config.txt"));
+        Scanner scan = new Scanner(new File("config1.txt"));
         String[] info;
-        while((info = scan.nextLine().split(" ")) != null){
+        scan.nextLine();
+        while(scan.hasNextLine()){
+            info = scan.nextLine().split(" ");
             String iP = info[0].split(":")[0];
-            int portNumber = Integer.parseInt(info[0].split(":")[1]);
+            System.out.println(info[0]);
+            int portNumber = Integer.parseInt((info[0].split(":"))[1]);
             Node n = new Node(iP, portNumber);
             int weight = Integer.parseInt(info[1]);
             this.curDv.put(n, n, weight);
@@ -64,6 +66,18 @@ public class Host {
         curDv.updateLink(iP, portNumber, NetworkMessage.LINK_DOWN);
         send(new NetworkMessage(NetworkMessage.LINK_DOWN), iP, portNumber);
     }
+
+    /*Display the routing table*/
+    public void showRoute(){
+        Date date = new Date();
+        System.out.println("\n"+date.toString() + "Distance vector is:");
+        for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : curDv){
+           System.out.println("Destination = " + e.getKey().getiP() +
+                   ", Cost = " + e.getValue().getValue().getWeight() + ", Link = ("
+                   + e.getValue().getKey().getiP() + ")");
+        }
+    }
+
 
     /*Send message via UDP packet*/
     private void send(NetworkMessage message, String iP, int portNumber){
@@ -146,7 +160,7 @@ public class Host {
                 for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : curDv){
                     send(new NetworkMessage(curDv), e.getKey().getiP(), e.getKey().getPort());
                 }
-                //TODO: clean this shit up!!!
+                //TODO: clean this shit up!!! && check that the nodes haven't expired
                 //update distance vector
                 for(Pair<Date, DistanceVector> pair : vectors){
                     DistanceVector distanceVector = pair.getValue();

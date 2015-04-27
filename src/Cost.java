@@ -1,9 +1,11 @@
+import java.io.Serializable;
+
 /**
  * Avi Chad-Friedman
  * ajc2212
  * Class to encapsulate sending a link down
 */
-public class Cost {
+public class Cost implements Serializable{
     private boolean active;
     private double weight;
 
