@@ -28,7 +28,17 @@ public class Node implements Serializable, Comparable<Node>{
     @Override
     //Hash the nodes by IP address only
     public int hashCode(){
+        //System.out.println(port + " Hashcode: "+this.iP.hashCode() + this.port);
         return this.iP.hashCode() + this.port;
     }
+
+    @Override
+    public boolean equals(Object object){
+        Node node = (Node) object;
+        if(this.getiP().equals(node.getiP()) && this.getPort() == node.getPort())
+            return true;
+        return false;
+    }
+
 
 }

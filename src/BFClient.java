@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 /**
@@ -14,10 +15,12 @@ public class BFClient {
             int portNumber = Integer.parseInt(info[0]);
             int timeout = Integer.parseInt(info[1]);
             Host h = new Host(portNumber, timeout);
-            h.start();
+            h.start(args[0]);
+
             /*TESTING SHIT*/
-            h.showRoute();
         }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (UnknownHostException e){
             e.printStackTrace();
         }
     }

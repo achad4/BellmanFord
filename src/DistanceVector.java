@@ -2,6 +2,7 @@ import javafx.util.Pair;
 
 import javax.xml.soap.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.*;
 import java.util.Iterator;
@@ -19,6 +20,8 @@ public class DistanceVector implements Serializable, Iterable<java.util.Map.Entr
     public DistanceVector(String iP, int port){
         this.owner = new Node(iP, port);
         links = new HashMap<Node, Pair<Node, Cost>>();
+        //add yourself to the table
+        this.put(this.owner, this.owner, 0);
     }
 
     public Node getOwner(){ return owner;}
@@ -38,13 +41,14 @@ public class DistanceVector implements Serializable, Iterable<java.util.Map.Entr
 
 
     /*returns true on success and false if no link exists*/
-    public boolean updateLink(String iP, int port, int flag){
-        Node search = new Node(iP, port);
-        if(this.links.get(search) != null){
+    public boolean updateLink(Node node, int flag){
+        if(this.links.get(node) != null){
             if(flag == NetworkMessage.LINK_UP) {
-                links.get(search).getValue().restore();
+                System.out.println("Destroying link to "+node.getPort());
+                links.get(node).getValue().restore();
             }else{
-                links.get(search).getValue().destroy();
+                System.out.println("Restoring link to "+node.getPort());
+                links.get(node).getValue().destroy();
             }
             return true;
         }
@@ -55,6 +59,30 @@ public class DistanceVector implements Serializable, Iterable<java.util.Map.Entr
     //Returns iterator over the set of nodes in the distance vector
     public Iterator<java.util.Map.Entry<Node, Pair<Node, Cost>>> iterator(){
         return links.entrySet().iterator();
+    }
+
+    /*Display the routing table*/
+    public void showRoute(){
+        Date date = new Date();
+        System.out.println("\n"+date.toString() + "Distance vector is:");
+        for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : this){
+            System.out.println("Destination = " + e.getKey().getPort() +
+                    ", Cost = " + e.getValue().getValue().getWeight() + ", Link = ("
+                    + e.getValue().getKey().getPort() + ")");
+        }
+    }
+
+    @Override
+    public int hashCode(){
+        return this.owner.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object object){
+        DistanceVector dv = (DistanceVector) object;
+        if(this.owner  == dv.owner)
+            return true;
+        return false;
     }
 
 

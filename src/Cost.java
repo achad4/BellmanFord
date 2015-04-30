@@ -3,7 +3,7 @@ import java.io.Serializable;
 /**
  * Avi Chad-Friedman
  * ajc2212
- * Class to encapsulate sending a link down
+ * Class to encapsulate the cost and activity of a link
 */
 public class Cost implements Serializable{
     private boolean active;
@@ -22,7 +22,11 @@ public class Cost implements Serializable{
         active = true;
     }
 
-    public double getWeight(){ return weight;};
+    public double getWeight(){
+        if(active)
+            return weight;
+        return Double.MAX_VALUE;
+    };
 
-    public boolean isActive(){ return active;}
+    //public boolean isActive(){ return active;}
 }

@@ -3,6 +3,7 @@ import javafx.util.Pair;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Avi Chad-Friedman
@@ -11,7 +12,9 @@ import java.util.*;
 
 public class Host {
     private DistanceVector curDv;
-    private ArrayList<Pair<Date, DistanceVector>> vectors;
+    //private ArrayList<Pair<Date, DistanceVector>> vectors;
+    private HashMap<DistanceVector, Date> vectors;
+    private ArrayList<Node> neighbors;
     private DatagramSocket serverSock;
     private DatagramSocket clientSocket;
     private int timeout;
@@ -19,8 +22,11 @@ public class Host {
 
     public Host(int portNumber, int timeout){
         try {
-            this.vectors = new ArrayList<Pair<Date, DistanceVector>>();
-            this.curDv = new DistanceVector(InetAddress.getLocalHost().getHostAddress(), portNumber);
+            //this.vectors = new ArrayList<Pair<Date, DistanceVector>>();
+            this.vectors = new HashMap<DistanceVector, Date>();
+            this.neighbors = new ArrayList<Node>();
+            //TODO: Figure out this IP shit!!
+            this.curDv = new DistanceVector( InetAddress.getByName("localhost").getHostAddress(), portNumber);
             this.timeout = timeout;
             serverSock = new DatagramSocket(curDv.getOwner().getPort());
             clientSocket = new DatagramSocket();
@@ -36,19 +42,23 @@ public class Host {
     }
 
     /*Inititializes distance vector and start the tasks*/
-    public void start() throws NumberFormatException, FileNotFoundException{
-        Scanner scan = new Scanner(new File("config1.txt"));
+    public void start(String config) throws NumberFormatException, FileNotFoundException, UnknownHostException{
+        Scanner scan = new Scanner(new File(config));
         String[] info;
         scan.nextLine();
         while(scan.hasNextLine()){
             info = scan.nextLine().split(" ");
             String iP = info[0].split(":")[0];
-            System.out.println(info[0]);
+            InetAddress address = InetAddress.getByName(iP);
+            iP = address.getHostAddress();
             int portNumber = Integer.parseInt((info[0].split(":"))[1]);
             Node n = new Node(iP, portNumber);
             int weight = Integer.parseInt(info[1]);
             this.curDv.put(n, n, weight);
+            this.neighbors.add(n);
         }
+        System.out.println("START:");
+        curDv.showRoute();
         Server serverThread = new Server();
         serverThread.start();
         HeartBeat heartBeatThread = new HeartBeat();
@@ -57,25 +67,16 @@ public class Host {
 
     /*Restore link and alert neighbor*/
     public void linkUp(String iP, int portNumber){
-        curDv.updateLink(iP, portNumber, NetworkMessage.LINK_UP);
+        Node node = new Node(iP, portNumber);
+        curDv.updateLink(node, NetworkMessage.LINK_UP);
         send(new NetworkMessage(NetworkMessage.LINK_UP), iP, portNumber);
     }
 
     /*Destroy link and alert neighbor*/
     public void linkDown(String iP, int portNumber){
-        curDv.updateLink(iP, portNumber, NetworkMessage.LINK_DOWN);
+        Node node = new Node(iP, portNumber);
+        curDv.updateLink(node, NetworkMessage.LINK_DOWN);
         send(new NetworkMessage(NetworkMessage.LINK_DOWN), iP, portNumber);
-    }
-
-    /*Display the routing table*/
-    public void showRoute(){
-        Date date = new Date();
-        System.out.println("\n"+date.toString() + "Distance vector is:");
-        for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : curDv){
-           System.out.println("Destination = " + e.getKey().getiP() +
-                   ", Cost = " + e.getValue().getValue().getWeight() + ", Link = ("
-                   + e.getValue().getKey().getiP() + ")");
-        }
     }
 
 
@@ -140,7 +141,11 @@ public class Host {
         //TODO: write BF function to update DV
         /*Recieve neighbor's DV and run BF to update own*/
         private void handleDistanceVector(DistanceVector dv){
-            vectors.add(new Pair<Date, DistanceVector>(new Date(), dv));
+            //vectors.add(new Pair<Date, DistanceVector>(new Date(), dv));
+            if(vectors.get(dv) != null){
+                vectors.remove(dv);
+            }
+            vectors.put(dv, new Date());
         }
 
         /*Update link*/
@@ -157,23 +162,46 @@ public class Host {
         class BellmanFord extends TimerTask {
             public void run(){
                 //send DV to all neighbors
-                for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : curDv){
-                    send(new NetworkMessage(curDv), e.getKey().getiP(), e.getKey().getPort());
+                for(Node n : neighbors){
+                    //poisson reversal
+                    DistanceVector temp = curDv;
+                    for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : temp){
+                        //if the hop is the neighbor
+                        //TODO: Figure out Poisson reverse
+                        if(e.getValue().getKey().equals(n)){
+                            //temp.updateLink(e.getKey(), NetworkMessage.LINK_DOWN);
+                        }
+
+                    }
+                    if(!curDv.getOwner().equals(n))
+                        send(new NetworkMessage(temp), n.getiP(), n.getPort());
                 }
-                //TODO: clean this shit up!!! && check that the nodes haven't expired
                 //update distance vector
-                for(Pair<Date, DistanceVector> pair : vectors){
-                    DistanceVector distanceVector = pair.getValue();
+                for(DistanceVector distanceVector : vectors.keySet()){
+                    System.out.println("NEXT VECTOR");
+                    //DistanceVector distanceVector = pair.getValue();
+                    Date recieved = vectors.get(distanceVector);
+                    long diff = getDiff(recieved, new Date(), TimeUnit.SECONDS);
+                    //If update hasn't been recieved recently
+                    if(diff > 3*timeout){
+                        curDv.updateLink(distanceVector.getOwner(), NetworkMessage.LINK_DOWN);
+                    }
+                    //distanceVector.showRoute();
                     for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : distanceVector){
-                        Pair<Node, Cost> p;
+                        //Pair<Node, Cost> p;
                         //if the host has a entry for this node
                         Node dest = e.getKey();
-                        Node hop = pair.getValue().getOwner();
+                        Node hop = distanceVector.getOwner();
                         double distToHop = curDv.get(hop).getValue().getWeight();
+                        //System.out.println("distToHop: "+distToHop+" hop: "+hop.getPort());
+
+                        //distance from the node that send the vector to the destination
                         double distFromHop = distanceVector.get(dest).getValue().getWeight();
+                       // System.out.println("distFromHop: "+distFromHop + " destination: "+dest.getPort());
                         Pair<Node, Cost> curEntry;
                         if((curEntry = curDv.get(dest)) != null){
                             double curWeight = curEntry.getValue().getWeight();
+                            //System.out.println("curWeight: "+curWeight);
                             if(curWeight > distFromHop + distToHop){
                                 curDv.put(dest, hop, distFromHop + distToHop);
                             }
@@ -181,8 +209,15 @@ public class Host {
                         else{
                             curDv.put(dest, hop, distFromHop + distToHop);
                         }
+                        System.out.println("UPDATED ROUTE");
+                        curDv.showRoute();
                     }
                 }
+            }
+
+            public long getDiff(Date date1, Date date2, TimeUnit timeUnit){
+                long diff = date2.getTime() - date1.getTime();
+                return timeUnit.convert(diff,TimeUnit.MILLISECONDS);
             }
         }
         public void run(){
