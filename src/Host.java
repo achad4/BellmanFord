@@ -166,10 +166,18 @@ public class Host {
                     //poisson reversal
                     DistanceVector temp = curDv;
                     for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : temp){
+
                         //if the hop is the neighbor
                         //TODO: Figure out Poisson reverse
-                        if(e.getValue().getKey().equals(n)){
-                            //temp.updateLink(e.getKey(), NetworkMessage.LINK_DOWN);
+                        //if not neighbor
+                        if(!e.getKey().equals(e.getValue().getKey())) {
+                            Node dest = e.getKey();
+                            //if I hop through the neighbor to get to the destination
+                            if(dest.equals(e.getValue().getKey())){
+                                System.out.println("Poisson: " + e.getValue().getKey().getPort());
+                                temp.updateLink(e.getKey(), NetworkMessage.LINK_DOWN);
+                            }
+
                         }
 
                     }
@@ -179,12 +187,17 @@ public class Host {
                 //update distance vector
                 for(DistanceVector distanceVector : vectors.keySet()){
                     System.out.println("NEXT VECTOR");
+                    distanceVector.showRoute();
                     //DistanceVector distanceVector = pair.getValue();
                     Date recieved = vectors.get(distanceVector);
                     long diff = getDiff(recieved, new Date(), TimeUnit.SECONDS);
                     //If update hasn't been recieved recently
                     if(diff > 3*timeout){
+                        System.out.println("date: "+recieved.getTime()/1000);
+                        System.out.println("diff: "+diff);
+                        System.out.println("TIMING OUT LINK: "+distanceVector.getOwner().getPort());
                         curDv.updateLink(distanceVector.getOwner(), NetworkMessage.LINK_DOWN);
+                        neighbors.remove(distanceVector.getOwner());
                     }
                     //distanceVector.showRoute();
                     for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : distanceVector){
@@ -193,17 +206,19 @@ public class Host {
                         Node dest = e.getKey();
                         Node hop = distanceVector.getOwner();
                         double distToHop = curDv.get(hop).getValue().getWeight();
-                        //System.out.println("distToHop: "+distToHop+" hop: "+hop.getPort());
+                        System.out.println("distToHop: "+distToHop+" hop: "+hop.getPort());
 
                         //distance from the node that send the vector to the destination
                         double distFromHop = distanceVector.get(dest).getValue().getWeight();
-                       // System.out.println("distFromHop: "+distFromHop + " destination: "+dest.getPort());
+                        System.out.println("distFromHop: "+distFromHop + " destination: "+dest.getPort());
                         Pair<Node, Cost> curEntry;
                         if((curEntry = curDv.get(dest)) != null){
                             double curWeight = curEntry.getValue().getWeight();
-                            //System.out.println("curWeight: "+curWeight);
+                            System.out.println("curWeight: "+curWeight);
                             if(curWeight > distFromHop + distToHop){
-                                curDv.put(dest, hop, distFromHop + distToHop);
+                                //check if there is a hop in between
+                                Node next =  curDv.get(hop).getKey();
+                                curDv.put(dest, next, distFromHop + distToHop);
                             }
                         }
                         else{
