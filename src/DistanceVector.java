@@ -80,7 +80,7 @@ public class DistanceVector implements Serializable, Iterable<java.util.Map.Entr
     @Override
     public boolean equals(Object object){
         DistanceVector dv = (DistanceVector) object;
-        if(this.owner  == dv.owner)
+        if(this.owner.equals(dv.owner))
             return true;
         return false;
     }

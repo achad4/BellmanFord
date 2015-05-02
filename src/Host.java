@@ -142,6 +142,7 @@ public class Host {
         /*Recieve neighbor's DV and run BF to update own*/
         private void handleDistanceVector(DistanceVector dv){
             //vectors.add(new Pair<Date, DistanceVector>(new Date(), dv));
+
             if(vectors.get(dv) != null){
                 vectors.remove(dv);
             }
@@ -198,6 +199,7 @@ public class Host {
                         System.out.println("TIMING OUT LINK: "+distanceVector.getOwner().getPort());
                         curDv.updateLink(distanceVector.getOwner(), NetworkMessage.LINK_DOWN);
                         neighbors.remove(distanceVector.getOwner());
+                        continue;
                     }
                     //distanceVector.showRoute();
                     for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : distanceVector){
