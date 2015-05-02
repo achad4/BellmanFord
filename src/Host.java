@@ -1,5 +1,4 @@
 import javafx.util.Pair;
-
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -12,9 +11,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Host {
     private DistanceVector curDv;
-    //private ArrayList<Pair<Date, DistanceVector>> vectors;
     private HashMap<DistanceVector, Date> vectors;
-    private ArrayList<Node> neighbors;
+    private HashMap<Node, Cost> neighbors;
     private DatagramSocket serverSock;
     private DatagramSocket clientSocket;
     private int timeout;
@@ -22,9 +20,8 @@ public class Host {
 
     public Host(int portNumber, int timeout){
         try {
-            //this.vectors = new ArrayList<Pair<Date, DistanceVector>>();
             this.vectors = new HashMap<DistanceVector, Date>();
-            this.neighbors = new ArrayList<Node>();
+            this.neighbors = new HashMap<Node, Cost>();
             //TODO: Figure out this IP shit!!
             this.curDv = new DistanceVector( InetAddress.getByName("localhost").getHostAddress(), portNumber);
             this.timeout = timeout;
@@ -55,7 +52,7 @@ public class Host {
             Node n = new Node(iP, portNumber);
             int weight = Integer.parseInt(info[1]);
             this.curDv.put(n, n, weight);
-            this.neighbors.add(n);
+            this.neighbors.put(n, new Cost(weight, true));
         }
         System.out.println("START:");
         curDv.showRoute();
@@ -63,6 +60,107 @@ public class Host {
         serverThread.start();
         HeartBeat heartBeatThread = new HeartBeat();
         heartBeatThread.start();
+    }
+
+    private ArrayList<DistanceVector> estimateCosts(){
+        ArrayList<DistanceVector> deadNodes = new ArrayList<DistanceVector>();
+        for(Node n : neighbors.keySet()){
+            //poisson reversal
+            DistanceVector temp = new DistanceVector(curDv.getOwner().getiP(), curDv.getOwner().getPort());
+            for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : curDv) {
+                temp.put(e.getKey(), e.getValue().getKey(), e.getValue().getValue().getWeight());
+                if (!e.getKey().equals(e.getValue().getKey())) {
+                    //if I hop through the neighbor to get to the destination
+                    if (n.equals(e.getValue().getKey())) {
+                        temp.updateLink(e.getKey(), NetworkMessage.LINK_DOWN);
+                    }
+                }
+            }
+            /*
+            for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : temp){
+
+                //if the hop is the neighbor
+                //TODO: Figure out Poisson reverse
+                //if not neighbor
+                if(!e.getKey().equals(e.getValue().getKey())) {
+                    //if I hop through the neighbor to get to the destination
+                    if(n.equals(e.getValue().getKey())){
+                        System.out.println("Hop: " + e.getValue().getKey().getPort());
+                        System.out.println("Neighbor: " + n.getPort());
+                        System.out.println("Dest: " + e.getKey().getPort());
+                        temp.updateLink(e.getKey(), NetworkMessage.LINK_DOWN);
+                    }
+
+                }
+
+            }*/
+            if(!curDv.getOwner().equals(n))
+                send(new NetworkMessage(temp), n.getiP(), n.getPort());
+        }
+        //update distance vector
+        for(DistanceVector distanceVector : vectors.keySet()){
+
+            System.out.println("NEXT VECTOR");
+            distanceVector.showRoute();
+            //DistanceVector distanceVector = pair.getValue();
+            Date recieved = vectors.get(distanceVector);
+            long diff = getDiff(recieved, new Date(), TimeUnit.SECONDS);
+            //If update hasn't been recieved recently
+            if(diff > 3*timeout){
+                System.out.println("date: "+recieved.getTime()/1000);
+                System.out.println("diff: "+diff);
+                System.out.println("TIMING OUT LINK: "+distanceVector.getOwner().getPort());
+                //curDv.updateLink(distanceVector.getOwner(), NetworkMessage.LINK_DOWN);
+                //neighbors.get(distanceVector.getOwner()).destroy();
+                //vectors.remove(distanceVector);
+                handleTimeout(distanceVector);
+                deadNodes.add(distanceVector);
+                //distanceVector.getOwner().setDead(true);
+                curDv.get(distanceVector.getOwner()).getKey().setDead(true);
+                continue;
+            }
+            //distanceVector.showRoute();
+            for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : distanceVector){
+                //Pair<Node, Cost> p;
+                //if the host has a entry for this node
+                Node dest = e.getKey();
+                Node hop = distanceVector.getOwner();
+                //double distToHop = curDv.get(hop).getValue().getWeight();
+                double distToHop = neighbors.get(hop).getWeight();
+                System.out.println("distToHop: "+distToHop+" hop: "+hop.getPort());
+
+                //distance from the node that send the vector to the destination
+                double distFromHop = distanceVector.get(dest).getValue().getWeight();
+                System.out.println("distFromHop: "+distFromHop + " destination: "+dest.getPort());
+                Pair<Node, Cost> curEntry;
+
+                if (((curEntry = curDv.get(dest)) != null) && curDv.get(dest).getValue().isActive()) {
+                    double curWeight = curEntry.getValue().getWeight();
+                    System.out.println("curWeight: " + curWeight);
+                    if (curWeight > distFromHop + distToHop) {
+                        //check if there is a hop in between
+                        Node next = curDv.get(hop).getKey();
+                        if(!dest.isDead()) {
+                            curDv.put(dest, next, distFromHop + distToHop);
+                        }
+                    }
+                } else {
+                    if(!dest.isDead()) {
+                        System.out.println("not dead: "+dest.getPort());
+                        curDv.put(dest, hop, distFromHop + distToHop);
+                    }
+                }
+
+            }
+            System.out.println("UPDATED ROUTE");
+            curDv.showRoute();
+        }
+        return deadNodes;
+    }
+
+    public long getDiff(Date date1, Date date2, TimeUnit timeUnit){
+        long diff = date2.getTime() - date1.getTime();
+        return timeUnit.convert(diff,TimeUnit.MILLISECONDS);
     }
 
     /*Restore link and alert neighbor*/
@@ -77,6 +175,17 @@ public class Host {
         Node node = new Node(iP, portNumber);
         curDv.updateLink(node, NetworkMessage.LINK_DOWN);
         send(new NetworkMessage(NetworkMessage.LINK_DOWN), iP, portNumber);
+    }
+
+    public void handleTimeout(DistanceVector distanceVector){
+        Node owner = distanceVector.getOwner();
+        neighbors.get(distanceVector.getOwner()).destroy();
+        //update all paths with this node as a hop
+        for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : curDv){
+            if(e.getKey().equals(owner) || e.getValue().getKey().equals(owner)){
+                curDv.updateLink(e.getKey(), NetworkMessage.LINK_DOWN);
+            }
+        }
     }
 
 
@@ -100,6 +209,7 @@ public class Host {
             e.printStackTrace();
         }
     }
+
 
     /*
     * Thread to listen for updates from other hosts
@@ -157,78 +267,17 @@ public class Host {
                 linkDown(iP, portNumber);
             }
         }
+
+
     }
 
     class HeartBeat extends Thread{
         class BellmanFord extends TimerTask {
             public void run(){
-                //send DV to all neighbors
-                for(Node n : neighbors){
-                    //poisson reversal
-                    DistanceVector temp = curDv;
-                    for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : temp){
-
-                        //if the hop is the neighbor
-                        //TODO: Figure out Poisson reverse
-                        //if not neighbor
-                        if(!e.getKey().equals(e.getValue().getKey())) {
-                            Node dest = e.getKey();
-                            //if I hop through the neighbor to get to the destination
-                            if(dest.equals(e.getValue().getKey())){
-                                System.out.println("Poisson: " + e.getValue().getKey().getPort());
-                                temp.updateLink(e.getKey(), NetworkMessage.LINK_DOWN);
-                            }
-
-                        }
-
-                    }
-                    if(!curDv.getOwner().equals(n))
-                        send(new NetworkMessage(temp), n.getiP(), n.getPort());
-                }
-                //update distance vector
-                for(DistanceVector distanceVector : vectors.keySet()){
-                    System.out.println("NEXT VECTOR");
-                    distanceVector.showRoute();
-                    //DistanceVector distanceVector = pair.getValue();
-                    Date recieved = vectors.get(distanceVector);
-                    long diff = getDiff(recieved, new Date(), TimeUnit.SECONDS);
-                    //If update hasn't been recieved recently
-                    if(diff > 3*timeout){
-                        System.out.println("date: "+recieved.getTime()/1000);
-                        System.out.println("diff: "+diff);
-                        System.out.println("TIMING OUT LINK: "+distanceVector.getOwner().getPort());
-                        curDv.updateLink(distanceVector.getOwner(), NetworkMessage.LINK_DOWN);
-                        neighbors.remove(distanceVector.getOwner());
-                        continue;
-                    }
-                    //distanceVector.showRoute();
-                    for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : distanceVector){
-                        //Pair<Node, Cost> p;
-                        //if the host has a entry for this node
-                        Node dest = e.getKey();
-                        Node hop = distanceVector.getOwner();
-                        double distToHop = curDv.get(hop).getValue().getWeight();
-                        System.out.println("distToHop: "+distToHop+" hop: "+hop.getPort());
-
-                        //distance from the node that send the vector to the destination
-                        double distFromHop = distanceVector.get(dest).getValue().getWeight();
-                        System.out.println("distFromHop: "+distFromHop + " destination: "+dest.getPort());
-                        Pair<Node, Cost> curEntry;
-                        if((curEntry = curDv.get(dest)) != null){
-                            double curWeight = curEntry.getValue().getWeight();
-                            System.out.println("curWeight: "+curWeight);
-                            if(curWeight > distFromHop + distToHop){
-                                //check if there is a hop in between
-                                Node next =  curDv.get(hop).getKey();
-                                curDv.put(dest, next, distFromHop + distToHop);
-                            }
-                        }
-                        else{
-                            curDv.put(dest, hop, distFromHop + distToHop);
-                        }
-                        System.out.println("UPDATED ROUTE");
-                        curDv.showRoute();
-                    }
+                ArrayList<DistanceVector> deadNodes = estimateCosts();
+                for(DistanceVector d : deadNodes){
+                    System.out.println("Removing DV"+d.getOwner().getPort());
+                    vectors.remove(d);
                 }
             }
 

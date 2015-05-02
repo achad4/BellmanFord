@@ -28,5 +28,5 @@ public class Cost implements Serializable{
         return Double.MAX_VALUE;
     };
 
-    //public boolean isActive(){ return active;}
+    public boolean isActive(){ return active;}
 }
