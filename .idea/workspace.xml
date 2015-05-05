@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e14cf4ee-ae7d-4899-8eae-229e05a1b83f" name="Default" comment="Fixed that timeout shit">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Cost.java" afterPath="$PROJECT_DIR$/src/Cost.java" />
+    <list default="true" id="e14cf4ee-ae7d-4899-8eae-229e05a1b83f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Host.java" afterPath="$PROJECT_DIR$/src/Host.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Node.java" afterPath="$PROJECT_DIR$/src/Node.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/config1.txt" afterPath="$PROJECT_DIR$/src/config1.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/config2.txt" afterPath="$PROJECT_DIR$/src/config2.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/config3.txt" afterPath="$PROJECT_DIR$/src/config3.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/config4.txt" afterPath="$PROJECT_DIR$/src/config4.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/config5.txt" afterPath="$PROJECT_DIR$/src/config5.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="BellmanFord.iws" />
@@ -30,11 +33,61 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Host.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="output1.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/output1.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-5.9259257" vertical-offset="42200" max-vertical-offset="42975">
+              <caret line="2824" column="0" selection-start-line="2824" selection-start-column="0" selection-end-line="2824" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="output2.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/output2.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="29588" max-vertical-offset="30390">
+              <caret line="2014" column="0" selection-start-line="2014" selection-start-column="0" selection-end-line="2014" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="output3.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/output3.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-24.25926" vertical-offset="63845" max-vertical-offset="64620">
+              <caret line="4300" column="35" selection-start-line="4300" selection-start-column="35" selection-end-line="4300" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="output5.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/output5.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-23.819202" vertical-offset="24953" max-vertical-offset="25755">
+              <caret line="390" column="0" selection-start-line="390" selection-start-column="0" selection-end-line="390" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="output4.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/output4.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="10005" max-vertical-offset="48225">
+              <caret line="667" column="0" selection-start-line="667" selection-start-column="0" selection-end-line="667" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Host.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Host.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.36774194" vertical-offset="885" max-vertical-offset="4515">
-              <caret line="78" column="14" selection-start-line="78" selection-start-column="14" selection-end-line="78" selection-end-column="14" />
+            <state vertical-scroll-proportion="-18.148148" vertical-offset="1475" max-vertical-offset="4365">
+              <caret line="131" column="25" selection-start-line="131" selection-start-column="25" selection-end-line="131" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1108#1109#0" expanded="true" />
@@ -48,7 +101,7 @@
       <file leaf-file-name="DistanceVector.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DistanceVector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1365">
+            <state vertical-scroll-proportion="0.0" vertical-offset="563" max-vertical-offset="1365">
               <caret line="77" column="5" selection-start-line="77" selection-start-column="5" selection-end-line="77" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -59,11 +112,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Cost.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Cost.java">
+      <file leaf-file-name="config1.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/config1.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
-              <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="120">
+              <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -73,31 +126,18 @@
         <entry file="file://$PROJECT_DIR$/src/config2.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="120">
-              <caret line="0" column="7" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="7" />
+              <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config3.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/config3.txt">
+      <file leaf-file-name="config5.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/config5.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="135">
-              <caret line="0" column="7" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="7" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="105">
+              <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Node.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Node.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="870">
-              <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
-              <folding>
-                <element signature="e#528#529#0" expanded="true" />
-                <element signature="e#560#561#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -115,15 +155,19 @@
         <option value="$PROJECT_DIR$/src/config.txt" />
         <option value="$PROJECT_DIR$/src/Makefile" />
         <option value="$PROJECT_DIR$/src/BFClient.java" />
-        <option value="$PROJECT_DIR$/src/config1.txt" />
-        <option value="$PROJECT_DIR$/src/config2.txt" />
-        <option value="$PROJECT_DIR$/src/config3.txt" />
-        <option value="$PROJECT_DIR$/src/config5.txt" />
-        <option value="$PROJECT_DIR$/src/config4.txt" />
         <option value="$PROJECT_DIR$/src/DistanceVector.java" />
         <option value="$PROJECT_DIR$/src/Cost.java" />
         <option value="$PROJECT_DIR$/src/Node.java" />
+        <option value="$PROJECT_DIR$/src/config1.txt" />
+        <option value="$PROJECT_DIR$/src/config2.txt" />
+        <option value="$PROJECT_DIR$/src/config3.txt" />
+        <option value="$PROJECT_DIR$/src/config4.txt" />
+        <option value="$PROJECT_DIR$/src/config5.txt" />
+        <option value="$PROJECT_DIR$/src/output2.txt" />
+        <option value="$PROJECT_DIR$/src/output3.txt" />
         <option value="$PROJECT_DIR$/src/Host.java" />
+        <option value="$PROJECT_DIR$/src/output1.txt" />
+        <option value="$PROJECT_DIR$/src/output5.txt" />
       </list>
     </option>
   </component>
@@ -440,7 +484,13 @@
       <option name="project" value="LOCAL" />
       <updated>1430588141064</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="got poission and timout mostly working">
+      <created>1430603796283</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1430603796283</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -542,7 +592,8 @@
     <MESSAGE value="Starting testing" />
     <MESSAGE value="poisson" />
     <MESSAGE value="Fixed that timeout shit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed that timeout shit" />
+    <MESSAGE value="got poission and timout mostly working" />
+    <option name="LAST_COMMIT_MESSAGE" value="got poission and timout mostly working" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -709,30 +760,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/config4.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="802">
-          <caret line="0" column="7" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/config5.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.018703243" vertical-offset="0" max-vertical-offset="802">
-          <caret line="1" column="16" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/config1.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="825">
-          <caret line="0" column="7" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Cost.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
@@ -741,18 +768,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/config2.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="120">
-          <caret line="0" column="7" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/config3.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="825">
-          <caret line="0" column="7" selection-start-line="0" selection-start-column="7" selection-end-line="0" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="135">
+          <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
           <folding />
         </state>
       </provider>
@@ -760,7 +779,7 @@
     <entry file="file://$PROJECT_DIR$/src/Node.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="870">
-          <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
+          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
           <folding>
             <element signature="e#528#529#0" expanded="true" />
             <element signature="e#560#561#0" expanded="true" />
@@ -768,9 +787,49 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/config4.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="120">
+          <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/config5.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="802">
+          <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/config2.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="120">
+          <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/config1.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="120">
+          <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/output2.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="29588" max-vertical-offset="30390">
+          <caret line="2014" column="0" selection-start-line="2014" selection-start-column="0" selection-end-line="2014" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/DistanceVector.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="563" max-vertical-offset="1365">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1365">
           <caret line="77" column="5" selection-start-line="77" selection-start-column="5" selection-end-line="77" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -782,14 +841,46 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Host.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36774194" vertical-offset="885" max-vertical-offset="4515">
-          <caret line="78" column="14" selection-start-line="78" selection-start-column="14" selection-end-line="78" selection-end-column="14" />
+        <state vertical-scroll-proportion="-18.148148" vertical-offset="1475" max-vertical-offset="4365">
+          <caret line="131" column="25" selection-start-line="131" selection-start-column="25" selection-end-line="131" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1108#1109#0" expanded="true" />
             <element signature="e#1136#1137#0" expanded="true" />
             <element signature="e#2272#2288#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/output1.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.9259257" vertical-offset="42200" max-vertical-offset="42975">
+          <caret line="2824" column="0" selection-start-line="2824" selection-start-column="0" selection-end-line="2824" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/output4.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="10005" max-vertical-offset="48225">
+          <caret line="667" column="0" selection-start-line="667" selection-start-column="0" selection-end-line="667" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/output3.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-24.25926" vertical-offset="63845" max-vertical-offset="64620">
+          <caret line="4300" column="35" selection-start-line="4300" selection-start-column="35" selection-end-line="4300" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/output5.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-23.819202" vertical-offset="24953" max-vertical-offset="25755">
+          <caret line="390" column="0" selection-start-line="390" selection-start-column="0" selection-end-line="390" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
