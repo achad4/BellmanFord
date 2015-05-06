@@ -7,25 +7,15 @@ import java.io.Serializable;
 public class Node implements Serializable, Comparable<Node>{
     private String iP;
     private int port;
-    private Boolean dead;
 
     public Node(String iP, int port){
         this.iP = iP;
         this.port = port;
-        this.dead = false;
     }
-
-    public int getWeight(){ return port;}
 
     public String getiP(){ return iP;}
 
     public int getPort(){ return port;}
-
-    public boolean isDead(){ return dead;}
-
-    public void setDead(boolean dead){
-        this.dead = dead;
-    }
 
     public int compareTo(Node n){
         if(this.getiP() == n.getiP() && this.getPort() == n.getPort())
@@ -36,7 +26,6 @@ public class Node implements Serializable, Comparable<Node>{
     @Override
     //Hash the nodes by IP address only
     public int hashCode(){
-        //System.out.println(port + " Hashcode: "+this.iP.hashCode() + this.port);
         return this.iP.hashCode() + this.port;
     }
 

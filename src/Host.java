@@ -76,7 +76,8 @@ public class Host {
                     }
                 }
             }
-            if(!curDv.getOwner().equals(n))
+            //if it's not yourself and is active
+            if(!curDv.getOwner().equals(n) && neighbors.get(n).isActive())
                 send(new Message(temp), n.getiP(), n.getPort());
         }
         DistanceVector temp = new DistanceVector(curDv.getOwner().getiP(), curDv.getOwner().getPort());
@@ -86,52 +87,27 @@ public class Host {
         }
         //update distance vector
         for(DistanceVector distanceVector : vectors.keySet()){
-
-            //System.out.println("NEXT VECTOR");
-            //distanceVector.showRoute();
-            //DistanceVector distanceVector = pair.getValue();
-            //System.out.println("OWNER: "+distanceVector.getOwner().getPort()+"  "+distanceVector.hashCode());
             Date recieved = vectors.get(distanceVector);
-            //System.out.println("RECIEVED: "+ recieved.getTime());
             long diff = getDiff(recieved, new Date(), TimeUnit.SECONDS);
-            //If update hasn't been recieved recently
             if(diff > 3*timeout){
                 System.out.println("date: "+recieved.getTime()/1000);
                 System.out.println("diff: "+diff);
                 System.out.println("TIMING OUT LINK: "+distanceVector.getOwner().getPort());
-                //curDv.updateLink(distanceVector.getOwner(), NetworkMessage.LINK_DOWN);
-                //neighbors.get(distanceVector.getOwner()).destroy();
-                //vectors.remove(distanceVector);
                 handleTimeout(distanceVector);
                 deadNodes.add(distanceVector);
-                //distanceVector.getOwner().setDead(true);
-                temp.get(distanceVector.getOwner()).getKey().setDead(true);
                 continue;
             }
-            //distanceVector.showRoute();
             for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : distanceVector){
                 //if the host has a entry for this node
                 Node dest = e.getKey();
                 Node hop = distanceVector.getOwner();
-                //double distToHop = curDv.get(hop).getValue().getWeight();
                 double distToHop = neighbors.get(hop).getWeight();
-                //System.out.println("distToHop: "+distToHop+" hop: "+hop.getPort());
-
                 //distance from the node that send the vector to the destination
                 double distFromHop = distanceVector.get(dest).getValue().getWeight();
                 //System.out.println("distFromHop: "+distFromHop + " destination: "+dest.getPort());
                 Pair<Node, Cost> curEntry;
-
-                if (((curEntry = temp.get(dest)) != null) && curDv.get(dest).getValue().isActive()) {
+                if ((curEntry = temp.get(dest)) != null) {
                     double curWeight = curEntry.getValue().getWeight();
-                    //System.out.println("curWeight: " + curWeight);
-                    //If the path hasn't changed check if the distance has
-                    //if(hop.equals(curEntry.getKey())){
-                        //if(distFromHop == Double.MAX_VALUE) {
-                          //  curDv.updateLink(dest, Message.LINK_DOWN);
-                        //curDv.put(dest, hop, distFromHop + distToHop);
-
-                    //}
                     if (curWeight > distFromHop + distToHop) {
                         //check if there is a hop in between
                         Node next = temp.get(hop).getKey();
@@ -140,10 +116,7 @@ public class Host {
                 } else {
                     temp.put(dest, hop, distFromHop + distToHop);
                 }
-
             }
-            //System.out.println("UPDATED ROUTE");
-            //curDv.showRoute()
         }
         curDv = temp;
         return deadNodes;
@@ -194,6 +167,10 @@ public class Host {
                 curDv.updateLink(e.getKey(), Message.LINK_DOWN);
             }
         }
+    }
+
+    public void transferFile(String iP, int portNumber, File file){
+        
     }
 
 
@@ -300,7 +277,6 @@ public class Host {
             public void run(){
                 ArrayList<DistanceVector> deadNodes = estimateCosts();
                 for(DistanceVector d : deadNodes){
-                    //System.out.println("Removing DV"+d.getOwner().getPort());
                     vectors.remove(d);
                 }
             }
