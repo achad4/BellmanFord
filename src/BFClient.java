@@ -36,22 +36,34 @@ public class BFClient {
                 int type;
                 String ip;
                 int port;
+                InetAddress address;
                 if ((type = parseCommand(info)) > 0) {
                     switch (type) {
                         case Message.LINK_UP:
                             ip = info[1];
+                            address = InetAddress.getByName(ip);
+                            ip = address.getHostAddress();
                             port = Integer.parseInt(info[2]);
                             h.linkUp(ip, port);
                             break;
                         case Message.LINK_DOWN:
                             ip = info[1];
-                            InetAddress address = InetAddress.getByName(ip);
+                            address = InetAddress.getByName(ip);
                             ip = address.getHostAddress();
                             port = Integer.parseInt(info[2]);
                             h.linkDown(ip, port);
                             break;
                         case Message.SHOWRT:
                             h.getCurDv().showRoute();
+                            break;
+                        case Message.CHANGECOST:
+                            ip = info[1];
+                            address = InetAddress.getByName(ip);
+                            ip = address.getHostAddress();
+                            port = Integer.parseInt(info[2]);
+                            double cost = Double.parseDouble(info[3]);
+                            System.out.println("COST: "+cost);
+                            h.changeCost(ip, port, cost);
                             break;
                     }
                 } else {
@@ -82,6 +94,10 @@ public class BFClient {
             return Message.LINK_DOWN;
         }else if(info[0].equals("SHOWRT")){
             return Message.SHOWRT;
+        }else if(info[0].equals("CHANGECOST")){
+            if(info.length != 4)
+                return -1;
+            return Message.CHANGECOST;
         }
         return -1;
     }

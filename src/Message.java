@@ -6,11 +6,12 @@ import java.io.Serializable;
  * ajc2212
  */
 public class Message implements Serializable{
-    public static final int DV = 0, LINK_UP = 1, LINK_DOWN = 2, SHOWRT = 3;
+    public static final int DV = 0, LINK_UP = 1, LINK_DOWN = 2, SHOWRT = 3, CHANGECOST = 4;
     private int portNumber;
     private int type;
     private DistanceVector dv;
     private String command;
+    private double cost;
 
     public Message(int type){
         this.type = type;
@@ -30,5 +31,9 @@ public class Message implements Serializable{
     public void setPortNumber(int portNumber) {
         this.portNumber = portNumber;
     }
+
+    public void setCost(double cost) { this.cost = cost; }
+
+    public double getCost() { return cost; }
 
 }

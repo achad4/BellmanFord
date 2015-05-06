@@ -158,7 +158,10 @@ public class Host {
     public void linkUp(String iP, int portNumber){
         Node node = new Node(iP, portNumber);
         curDv.updateLink(node, Message.LINK_UP);
-        send(new Message(Message.LINK_UP), iP, portNumber);
+        neighbors.get(node).restore();
+        Message message = new Message(Message.LINK_UP);
+        message.setPortNumber(this.getCurDv().getOwner().getPort());
+        send(message, iP, portNumber);
     }
 
     /*Destroy link and alert neighbor*/
@@ -168,9 +171,18 @@ public class Host {
         Message message = new Message(Message.LINK_DOWN);
         message.setPortNumber(this.getCurDv().getOwner().getPort());
         send(message, iP, portNumber);
-        System.out.println("linkdown: "+this.curDv.getOwner().getiP()+" "+portNumber);
         neighbors.get(node).destroy();
-        curDv.showRoute();
+    }
+
+    public void changeCost(String iP, int portNumber, double cost){
+        Node node = new Node(iP, portNumber);
+        //curDv.updateLink(node, Message.LINK_DOWN);
+        Message message = new Message(Message.CHANGECOST);
+        message.setCost(cost);
+        message.setPortNumber(this.getCurDv().getOwner().getPort());
+        send(message, iP, portNumber);
+        curDv.put(node, node, cost);
+        neighbors.put(node, new Cost(cost, true));
     }
 
     public void handleTimeout(DistanceVector distanceVector){
@@ -228,11 +240,13 @@ public class Host {
                             handleDistanceVector(message.getDv());
                             break;
                         case Message.LINK_UP:
-                            handleLinkUpdate(packet.getAddress().getHostAddress(), packet.getPort(), Message.LINK_UP);
+                            handleLinkUpdate(packet.getAddress().getHostAddress(), message.getPortNumber(), Message.LINK_UP);
                             break;
                         case Message.LINK_DOWN:
-                            System.out.println("LINKDOWN");
                             handleLinkUpdate(packet.getAddress().getHostAddress(), message.getPortNumber(), Message.LINK_DOWN);
+                            break;
+                        case Message.CHANGECOST:
+                            handleChangeCost(packet.getAddress().getHostAddress(), message.getPortNumber(), message.getCost());
                             break;
                     }
                 }
@@ -248,9 +262,10 @@ public class Host {
         //TODO: write BF function to update DV
         /*Recieve neighbor's DV and run BF to update own*/
         private void handleDistanceVector(DistanceVector dv){
-            //vectors.add(new Pair<Date, DistanceVector>(new Date(), dv));
-            if(dv.getOwner().getPort() == 4001) {
-                //System.out.println("4001 HEEEEERE");
+            if(!neighbors.containsKey(dv.getOwner())){
+                //new neighbor
+                neighbors.put(dv.getOwner(), dv.get(curDv.getOwner()).getValue());
+                curDv.put(dv.getOwner(), dv.getOwner(), dv.get(curDv.getOwner()).getValue().getWeight());
             }
             if(vectors.get(dv) != null){
                 vectors.remove(dv);
@@ -260,14 +275,21 @@ public class Host {
 
         /*Update link*/
         private void handleLinkUpdate(String iP, int portNumber, int flag){
+            Node node = new Node(iP, portNumber);
             if(flag == Message.LINK_UP) {
-                linkUp(iP, portNumber);
+                curDv.updateLink(node, Message.LINK_UP);
+                neighbors.get(node).restore();
             }else{
-                System.out.println(iP);
-                Node node = new Node(iP, portNumber);
                 curDv.updateLink(node, Message.LINK_DOWN);
                 neighbors.get(node).destroy();
             }
+        }
+
+        private void handleChangeCost(String iP, int portNumber, double cost){
+            Node node = new Node(iP, portNumber);
+            curDv.put(node, node, cost);
+            neighbors.remove(node);
+            neighbors.put(node, new Cost(cost, true));
         }
 
 
