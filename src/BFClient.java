@@ -1,5 +1,5 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
@@ -11,17 +11,78 @@ public class BFClient {
     public static void main(String[] args){
         try {
             Scanner scan = new Scanner(new File(args[0]));
-            String[] info = scan.nextLine().split(" ");
-            int portNumber = Integer.parseInt(info[0]);
-            int timeout = Integer.parseInt(info[1]);
+            String[] initInfo = scan.nextLine().split(" ");
+            int portNumber = Integer.parseInt(initInfo[0]);
+            int timeout = Integer.parseInt(initInfo[1]);
             Host h = new Host(portNumber, timeout);
             h.start(args[0]);
 
-            /*TESTING SHIT*/
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            for(;;) {
+                System.out.print(">");
+                //String command = scan.nextLine();
+                String command = "";
+                try {
+                    // wait until we have data to complete a readLine()
+                    while (!br.ready()) {
+                        Thread.sleep(200);
+                    }
+                    command = br.readLine();
+                } catch (InterruptedException e) {
+                    System.out.println("ConsoleInputReadTask() cancelled");
+                }
+                String[] info = command.split(" ");
+                //Message message = new Message(command, user);
+                int type;
+                String ip;
+                int port;
+                if ((type = parseCommand(info)) > 0) {
+                    switch (type) {
+                        case Message.LINK_UP:
+                            ip = info[1];
+                            port = Integer.parseInt(info[2]);
+                            h.linkUp(ip, port);
+                            break;
+                        case Message.LINK_DOWN:
+                            ip = info[1];
+                            InetAddress address = InetAddress.getByName(ip);
+                            ip = address.getHostAddress();
+                            port = Integer.parseInt(info[2]);
+                            h.linkDown(ip, port);
+                            break;
+                        case Message.SHOWRT:
+                            h.getCurDv().showRoute();
+                            break;
+                    }
+                } else {
+                    System.out.print(">Invalid command" + "\n");
+                }
+            }
+
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }catch (UnknownHostException e){
             e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }catch (NumberFormatException e){
+            e.printStackTrace();
         }
+    }
+
+    public static int parseCommand(String[] info){
+        if(info[0].equals("LINKUP")){
+            if(info.length != 3)
+                return -1;
+            return Message.LINK_UP;
+        }
+        else if(info[0].equals("LINKDOWN")){
+            if(info.length != 3)
+                return -1;
+            return Message.LINK_DOWN;
+        }else if(info[0].equals("SHOWRT")){
+            return Message.SHOWRT;
+        }
+        return -1;
     }
 }

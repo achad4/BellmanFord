@@ -43,11 +43,9 @@ public class DistanceVector implements Serializable, Iterable<java.util.Map.Entr
     /*returns true on success and false if no link exists*/
     public boolean updateLink(Node node, int flag){
         if(this.links.get(node) != null){
-            if(flag == NetworkMessage.LINK_UP) {
-                System.out.println("Destroying link to "+node.getPort());
+            if(flag == Message.LINK_UP) {
                 links.get(node).getValue().restore();
             }else{
-                System.out.println("Restoring link to "+node.getPort());
                 links.get(node).getValue().destroy();
             }
             return true;
