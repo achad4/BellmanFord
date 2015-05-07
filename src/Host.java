@@ -183,6 +183,7 @@ public class Host {
             message.setDestination(node);
             //reached end of file
             if(DATA_SIZE > len) {
+                System.out.println("LAST");
                 byte[] lastData;
                 lastData = Arrays.copyOf(buf, len);
                 message.setLast(true);
