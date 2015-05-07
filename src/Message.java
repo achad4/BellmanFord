@@ -13,11 +13,14 @@ public class Message implements Serializable{
     private String command;
     private double cost;
     private byte[] data;
-    private boolean lastData = false;
+    private boolean lastData;
     private Node destination;
     private String fileName;
 
-    public Message(int type){ this.type = type;}
+    public Message(int type){
+        this.type = type;
+        lastData = false;
+    }
 
     public Message(DistanceVector dv){
         this.dv = dv;
@@ -66,9 +69,7 @@ public class Message implements Serializable{
         this.fileName = fileName;
     }
 
-    public String getFileName(){
-        return fileName;
-    }
+    public String getFileName(){ return fileName; }
 
 
 
