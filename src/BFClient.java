@@ -73,7 +73,7 @@ public class BFClient {
                                 address = InetAddress.getByName(ip);
                                 ip = address.getHostAddress();
                                 port = Integer.parseInt(info[3]);
-                                h.transferFile(ip, port, file, "test.jpg");
+                                h.transferFile(ip, port, file, fileName);
                                 break;
                         }
                     } else {
