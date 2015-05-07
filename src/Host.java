@@ -146,6 +146,10 @@ public class Host {
     /*Destroy link and alert neighbor*/
     public void linkDown(String iP, int portNumber){
         Node node = new Node(iP, portNumber);
+        if(neighbors.get(node) == null) {
+            System.out.println("No neighbor at that destination");
+            return;
+        }
         curDv.updateLink(node, Message.LINK_DOWN);
         Message message = new Message(Message.LINK_DOWN);
         message.setPortNumber(this.getCurDv().getOwner().getPort());

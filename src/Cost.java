@@ -26,7 +26,7 @@ public class Cost implements Serializable{
         if(active)
             return weight;
         return Double.MAX_VALUE;
-    };
+    }
 
-    public boolean isActive(){ return active;}
+    public boolean isActive(){ return active; }
 }
