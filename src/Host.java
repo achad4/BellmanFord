@@ -262,6 +262,7 @@ public class Host {
                     in.close();
                     switch(message.getType()){
                         case Message.DV:
+                            System.out.println("Address: "+packet.getAddress().getHostAddress());
                             handleDistanceVector(message.getDv());
                             break;
                         case Message.LINK_UP:
@@ -271,7 +272,6 @@ public class Host {
                             handleLinkUpdate(packet.getAddress().getHostAddress(), message.getPortNumber(), Message.LINK_DOWN);
                             break;
                         case Message.CHANGECOST:
-                            System.out.println("Address: "+packet.getAddress().getHostAddress());
                             handleChangeCost(packet.getAddress().getHostAddress(), message.getPortNumber(), message.getCost());
                             break;
                         case Message.TRANSFER:

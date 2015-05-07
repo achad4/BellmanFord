@@ -43,8 +43,8 @@
       <file leaf-file-name="Host.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Host.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2451613" vertical-offset="3905" max-vertical-offset="5565">
-              <caret line="273" column="95" selection-start-line="273" selection-start-column="95" selection-end-line="273" selection-end-column="95" />
+            <state vertical-scroll-proportion="0.090322584" vertical-offset="3890" max-vertical-offset="5565">
+              <caret line="264" column="97" selection-start-line="264" selection-start-column="97" selection-end-line="264" selection-end-column="97" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1148#1149#0" expanded="true" />
@@ -541,7 +541,13 @@
       <option name="project" value="LOCAL" />
       <updated>1430963625501</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="playing with configs for CLIC&#10;">
+      <created>1430964356323</created>
+      <option name="number" value="00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1430964356323</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -963,8 +969,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Host.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2451613" vertical-offset="3905" max-vertical-offset="5565">
-          <caret line="273" column="95" selection-start-line="273" selection-start-column="95" selection-end-line="273" selection-end-column="95" />
+        <state vertical-scroll-proportion="0.090322584" vertical-offset="3890" max-vertical-offset="5565">
+          <caret line="264" column="97" selection-start-line="264" selection-start-column="97" selection-end-line="264" selection-end-column="97" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1148#1149#0" expanded="true" />
