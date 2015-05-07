@@ -1,10 +1,7 @@
-//import javafx.util.Pair;
 
-import javax.xml.soap.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map.*;
 import java.util.Iterator;
 
 /**
@@ -64,7 +61,7 @@ public class DistanceVector implements Serializable, Iterable<java.util.Map.Entr
         Date date = new Date();
         System.out.println("\n"+date.toString() + "Distance vector is:");
         for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : this){
-            System.out.println("Destination = " + e.getKey().getPort() +
+            System.out.println("Destination = " + e.getKey().getiP()+":"+e.getKey().getPort() +
                     ", Cost = " + e.getValue().getValue().getWeight() + ", Link = ("
                     + e.getValue().getKey().getPort() + ")");
         }
@@ -78,7 +75,7 @@ public class DistanceVector implements Serializable, Iterable<java.util.Map.Entr
     @Override
     public boolean equals(Object object){
         DistanceVector dv = (DistanceVector) object;
-        if(this.owner.equals(dv.owner))
+        if(owner.equals(dv.owner))
             return true;
         return false;
     }

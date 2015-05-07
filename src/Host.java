@@ -95,8 +95,6 @@ public class Host {
             Date recieved = vectors.get(distanceVector);
             long diff = getDiff(recieved, new Date(), TimeUnit.SECONDS);
             if(diff > 3*timeout){
-                System.out.println("TIMING OUT: " + distanceVector.getOwner().getiP()+":"+
-                        distanceVector.getOwner().getPort());
                 handleTimeout(distanceVector.getOwner());
                 deadNodes.add(distanceVector);
                 continue;
@@ -176,7 +174,7 @@ public class Host {
         }
     }
 
-    public boolean transferFile(String iP, int portNumber, File file, String fileName) throws FileNotFoundException, IOException{
+    public boolean transferFile(String iP, int portNumber, File file, String fileName) throws IOException{
         Node node  = new Node(iP, portNumber);
         Node hop;
         //check if there is a path to the destination
@@ -335,7 +333,7 @@ public class Host {
                 try {
                     File file = new File(message.getFileName());
                     if(message.isLast()){
-                        System.out.println("\n>File received successfully\n>");
+                        System.out.println("File received successfully");
                         return;
                     }
                     writeFile(file, message.getData());
@@ -346,7 +344,7 @@ public class Host {
                 }
             }else{
                 if(!forwardMessage(message)){
-                    System.out.println("Transfer Path not found\n>");
+                    System.out.println("Transfer Path not found");
                 }
             }
         }
