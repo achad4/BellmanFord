@@ -271,6 +271,7 @@ public class Host {
                             handleLinkUpdate(packet.getAddress().getHostAddress(), message.getPortNumber(), Message.LINK_DOWN);
                             break;
                         case Message.CHANGECOST:
+                            System.out.println("Address: "+packet.getAddress().getHostAddress());
                             handleChangeCost(packet.getAddress().getHostAddress(), message.getPortNumber(), message.getCost());
                             break;
                         case Message.TRANSFER:
@@ -287,7 +288,7 @@ public class Host {
             }
         }
 
-        //TODO: write BF function to update DV
+
         /*Recieve neighbor's DV and run BF to update own*/
         private void handleDistanceVector(DistanceVector dv){
             if(!neighbors.containsKey(dv.getOwner())){
