@@ -16,6 +16,7 @@ public class Host {
     private DatagramSocket serverSock;
     private DatagramSocket clientSocket;
     private int timeout;
+    public static final int DATA_SIZE = 2048;
 
 
     public Host(int portNumber, int timeout){
@@ -92,7 +93,7 @@ public class Host {
             if(diff > 3*timeout){
                 System.out.println("date: "+recieved.getTime()/1000);
                 System.out.println("diff: "+diff);
-                System.out.println("TIMING OUT LINK: "+distanceVector.getOwner().getPort());
+                System.out.println("TIMING OUT LINK: " + distanceVector.getOwner().getPort());
                 handleTimeout(distanceVector);
                 deadNodes.add(distanceVector);
                 continue;
@@ -169,8 +170,55 @@ public class Host {
         }
     }
 
-    public void transferFile(String iP, int portNumber, File file){
-        
+    public boolean transferFile(String iP, int portNumber, File file, String fileName) throws FileNotFoundException, IOException{
+        Node node  = new Node(iP, portNumber);
+        Node hop;
+        //check if there is a path to the destination
+        if((hop = curDv.get(node).getKey()) == null){
+            return false;
+        }
+        System.out.println("HOP"+hop.getiP()+"\n"+hop.getPort());
+        FileInputStream in = new FileInputStream(file);
+        int total = 0;
+        int len;
+        byte[] buf = new byte[DATA_SIZE];
+        while((len = in.read(buf, 0, DATA_SIZE)) > -1){
+            Message message = new Message(Message.TRANSFER);
+            message.setFileName(fileName);
+            message.setDestination(node);
+            //reached end of file
+            if(DATA_SIZE > len) {
+                byte[] lastData = new byte[len-1];
+                lastData = Arrays.copyOf(buf, len);
+                message.setLast(true);
+                message.setData(lastData);
+            }else{
+                message.setData(buf);
+            }
+            send(message, hop.getiP(), hop.getPort());
+            total += len;
+        }
+        System.out.println("TOTAL: "+total);
+        return true;
+    }
+
+    public void writeFile(File file, byte[] data, boolean lastData) throws IOException{
+        FileOutputStream out = new FileOutputStream(file, true);
+        out.write(data);
+        if(lastData){
+            System.out.println("\n>File received successfully\n>");
+        }
+
+    }
+
+    public boolean forwardMessage(Message message){
+        Node hop;
+        //check if there is a path to the destination
+        if((hop = curDv.get(message.getDestination()).getKey()) == null){
+            return false;
+        }
+        send(message, hop.getiP(), hop.getPort());
+        return true;
     }
 
 
@@ -225,6 +273,9 @@ public class Host {
                         case Message.CHANGECOST:
                             handleChangeCost(packet.getAddress().getHostAddress(), message.getPortNumber(), message.getCost());
                             break;
+                        case Message.TRANSFER:
+                            handleTransfer(message);
+                            break;
                     }
                 }
             }catch (SocketException e){
@@ -267,6 +318,24 @@ public class Host {
             curDv.put(node, node, cost);
             neighbors.remove(node);
             neighbors.put(node, new Cost(cost, true));
+        }
+
+        private void handleTransfer(Message message){
+            Node dest = message.getDestination();
+            if(dest.equals(curDv.getOwner())){
+                try {
+                    File file = new File(message.getFileName());
+                    writeFile(file, message.getData(), message.isLast());
+                }catch (FileNotFoundException e){
+                    e.printStackTrace();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }else{
+                if(!forwardMessage(message)){
+                    System.out.println("Transfer Path not found\n>");
+                }
+            }
         }
 
 

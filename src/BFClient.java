@@ -19,55 +19,72 @@ public class BFClient {
 
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             for(;;) {
-                System.out.print(">");
-                //String command = scan.nextLine();
-                String command = "";
                 try {
-                    // wait until we have data to complete a readLine()
-                    while (!br.ready()) {
-                        Thread.sleep(200);
+                    System.out.print(">");
+                    //String command = scan.nextLine();
+                    String command = "";
+                    try {
+                        // wait until we have data to complete a readLine()
+                        while (!br.ready()) {
+                            Thread.sleep(200);
+                        }
+                        command = br.readLine();
+                    } catch (InterruptedException e) {
+                        System.out.println("ConsoleInputReadTask() cancelled");
                     }
-                    command = br.readLine();
-                } catch (InterruptedException e) {
-                    System.out.println("ConsoleInputReadTask() cancelled");
-                }
-                String[] info = command.split(" ");
-                //Message message = new Message(command, user);
-                int type;
-                String ip;
-                int port;
-                InetAddress address;
-                if ((type = parseCommand(info)) > 0) {
-                    switch (type) {
-                        case Message.LINK_UP:
-                            ip = info[1];
-                            address = InetAddress.getByName(ip);
-                            ip = address.getHostAddress();
-                            port = Integer.parseInt(info[2]);
-                            h.linkUp(ip, port);
-                            break;
-                        case Message.LINK_DOWN:
-                            ip = info[1];
-                            address = InetAddress.getByName(ip);
-                            ip = address.getHostAddress();
-                            port = Integer.parseInt(info[2]);
-                            h.linkDown(ip, port);
-                            break;
-                        case Message.SHOWRT:
-                            h.getCurDv().showRoute();
-                            break;
-                        case Message.CHANGECOST:
-                            ip = info[1];
-                            address = InetAddress.getByName(ip);
-                            ip = address.getHostAddress();
-                            port = Integer.parseInt(info[2]);
-                            double cost = Double.parseDouble(info[3]);
-                            System.out.println("COST: "+cost);
-                            h.changeCost(ip, port, cost);
-                            break;
+                    String[] info = command.split(" ");
+                    //Message message = new Message(command, user);
+                    int type;
+                    String ip;
+                    int port;
+                    InetAddress address;
+                    if ((type = parseCommand(info)) > 0) {
+                        switch (type) {
+                            case Message.LINK_UP:
+                                ip = info[1];
+                                address = InetAddress.getByName(ip);
+                                ip = address.getHostAddress();
+                                port = Integer.parseInt(info[2]);
+                                h.linkUp(ip, port);
+                                break;
+                            case Message.LINK_DOWN:
+                                ip = info[1];
+                                address = InetAddress.getByName(ip);
+                                ip = address.getHostAddress();
+                                port = Integer.parseInt(info[2]);
+                                h.linkDown(ip, port);
+                                break;
+                            case Message.SHOWRT:
+                                h.getCurDv().showRoute();
+                                break;
+                            case Message.CHANGECOST:
+                                ip = info[1];
+                                address = InetAddress.getByName(ip);
+                                ip = address.getHostAddress();
+                                port = Integer.parseInt(info[2]);
+                                double cost = Double.parseDouble(info[3]);
+                                h.changeCost(ip, port, cost);
+                                break;
+                            case Message.TRANSFER:
+                                File file = new File(info[1]);
+                                String[] fileInfo = info[1].split("/");
+                                String fileName = fileInfo[fileInfo.length - 1];
+                                ip = info[2];
+                                address = InetAddress.getByName(ip);
+                                ip = address.getHostAddress();
+                                port = Integer.parseInt(info[3]);
+                                h.transferFile(ip, port, file, "test.jpg");
+                                break;
+                        }
+                    } else {
+                        System.out.print(">Invalid command" + "\n");
                     }
-                } else {
-                    System.out.print(">Invalid command" + "\n");
+                }catch (FileNotFoundException e){
+                    System.out.print(">File not found" + "\n");
+                }catch(UnknownHostException e){
+                    e.printStackTrace();
+                }catch (NumberFormatException e){
+                    System.out.print(">Invalid cost" + "\n");
                 }
             }
 
@@ -98,6 +115,10 @@ public class BFClient {
             if(info.length != 4)
                 return -1;
             return Message.CHANGECOST;
+        }else if(info[0].equals("TRANSFER")){
+            if(info.length != 4)
+                return -1;
+            return Message.TRANSFER;
         }
         return -1;
     }

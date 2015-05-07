@@ -10,7 +10,7 @@ CLASSES = \
 	Cost.java \
 	BFClient.java \
 	Node.java \
-	NetworkMessage.java \
+	Message.java \
 
 default: classes
 
