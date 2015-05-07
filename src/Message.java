@@ -6,7 +6,7 @@ import java.io.Serializable;
  * ajc2212
  */
 public class Message implements Serializable{
-    public static final int DV = 0, LINK_UP = 1, LINK_DOWN = 2, SHOWRT = 3, CHANGECOST = 4, TRANSFER = 5;
+    public static final int DV = 0, LINK_UP = 1, LINK_DOWN = 2, SHOWRT = 3, CHANGECOST = 4, TRANSFER = 5, CLOSE = 6;
     private int portNumber;
     private int type;
     private DistanceVector dv;

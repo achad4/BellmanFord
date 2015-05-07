@@ -199,6 +199,7 @@ public class Host {
             }
             send(message, hop.getiP(), hop.getPort());
         }
+        //send empty message indicating EOF
         Message message = new Message(Message.TRANSFER);
         message.setFileName(fileName);
         message.setDestination(node);

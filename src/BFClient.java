@@ -75,6 +75,9 @@ public class BFClient {
                                 port = Integer.parseInt(info[3]);
                                 h.transferFile(ip, port, file, fileName);
                                 break;
+                            case Message.CLOSE:
+                                System.exit(1);
+                                break;
                         }
                     } else {
                         System.out.print(">Invalid command" + "\n");
@@ -119,6 +122,8 @@ public class BFClient {
             if(info.length != 4)
                 return -1;
             return Message.TRANSFER;
+        }else if(info[0].equals("CLOSE")){
+            return Message.CLOSE;
         }
         return -1;
     }
