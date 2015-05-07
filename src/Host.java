@@ -133,7 +133,7 @@ public class Host {
     /*Restore link and alert neighbor*/
     public void linkUp(String iP, int portNumber){
         Node node = new Node(iP, portNumber);
-        if(neighbors.get(node) != null) {
+        if(neighbors.get(node) == null) {
             System.out.println("No neighbor at that destination");
             return;
         }
