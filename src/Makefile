@@ -11,6 +11,7 @@ CLASSES = \
 	BFClient.java \
 	Node.java \
 	Message.java \
+	Pair.java \
 
 default: classes
 
