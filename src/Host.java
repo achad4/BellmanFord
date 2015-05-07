@@ -67,7 +67,7 @@ public class Host {
         for(Node n : neighbors.keySet()){
             //check if a neighbor never started
             long diff = getDiff(start, new Date(), TimeUnit.SECONDS);
-            if(diff > 3*timeout && (vectors.get(n) == null)){
+            if(diff > 3*timeout && (vectors.get(new DistanceVector(n.getiP(), n.getPort())) == null)){
                 handleTimeout(n);
             }
             //poison reversal
