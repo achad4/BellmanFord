@@ -167,7 +167,7 @@ public class Host {
     }
 
     public void handleTimeout(Node node){
-        neighbors.get(node).destroy();
+        neighbors.remove(node);
         //update all paths with this node as a hop
         for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : curDv){
             if(e.getKey().equals(node) || e.getValue().getKey().equals(node)){
@@ -184,7 +184,6 @@ public class Host {
             return false;
         }
         FileInputStream in = new FileInputStream(file);
-        int total = 0;
         int len;
         byte[] buf = new byte[DATA_SIZE];
         while((len = in.read(buf, 0, DATA_SIZE)) > -1){
@@ -196,23 +195,24 @@ public class Host {
                 System.out.println("LAST");
                 byte[] lastData;
                 lastData = Arrays.copyOf(buf, len);
-                message.setLast(true);
                 message.setData(lastData);
             }else{
                 message.setData(buf);
             }
             send(message, hop.getiP(), hop.getPort());
-            total += len;
         }
+        Message message = new Message(Message.TRANSFER);
+        message.setFileName(fileName);
+        message.setDestination(node);
+        message.setLast(true);
+        send(message, hop.getiP(), hop.getPort());
+
         return true;
     }
 
-    public void writeFile(File file, byte[] data, boolean lastData) throws IOException{
+    public void writeFile(File file, byte[] data) throws IOException{
         FileOutputStream out = new FileOutputStream(file, true);
         out.write(data);
-        if(lastData){
-            System.out.println("\n>File received successfully\n>");
-        }
 
     }
 
@@ -334,7 +334,11 @@ public class Host {
             if(dest.equals(curDv.getOwner())){
                 try {
                     File file = new File(message.getFileName());
-                    writeFile(file, message.getData(), message.isLast());
+                    if(message.isLast()){
+                        System.out.println("\n>File received successfully\n>");
+                        return;
+                    }
+                    writeFile(file, message.getData());
                 }catch (FileNotFoundException e){
                     e.printStackTrace();
                 }catch (IOException e){
