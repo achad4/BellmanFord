@@ -16,6 +16,7 @@ public class Host {
     private DatagramSocket serverSock;
     private DatagramSocket clientSocket;
     private int timeout;
+    private Date start;
     public static final int DATA_SIZE = 2048;
 
 
@@ -23,11 +24,11 @@ public class Host {
         try {
             this.vectors = new HashMap<DistanceVector, Date>();
             this.neighbors = new HashMap<Node, Cost>();
-            //TODO: Figure out this IP shit!!
             this.curDv = new DistanceVector( InetAddress.getLocalHost().getHostAddress(), portNumber);
             this.timeout = timeout;
             serverSock = new DatagramSocket(curDv.getOwner().getPort());
             clientSocket = new DatagramSocket();
+            this.start = new Date();
         }catch (UnknownHostException e){
             e.printStackTrace();
         }catch (SocketException e){
@@ -64,7 +65,12 @@ public class Host {
     private ArrayList<DistanceVector> estimateCosts(){
         ArrayList<DistanceVector> deadNodes = new ArrayList<DistanceVector>();
         for(Node n : neighbors.keySet()){
-            //poisson reversal
+            //check if a neighbor never started
+            long diff = getDiff(start, new Date(), TimeUnit.SECONDS);
+            if(diff > 3*timeout && (vectors.get(n) == null)){
+                handleTimeout(n);
+            }
+            //poison reversal
             DistanceVector temp = new DistanceVector(curDv.getOwner().getiP(), curDv.getOwner().getPort());
             for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : curDv) {
                 temp.put(e.getKey(), e.getValue().getKey(), e.getValue().getValue().getWeight());
@@ -91,7 +97,7 @@ public class Host {
             if(diff > 3*timeout){
                 System.out.println("TIMING OUT: " + distanceVector.getOwner().getiP()+":"+
                         distanceVector.getOwner().getPort());
-                handleTimeout(distanceVector);
+                handleTimeout(distanceVector.getOwner());
                 deadNodes.add(distanceVector);
                 continue;
             }
@@ -127,11 +133,16 @@ public class Host {
     /*Restore link and alert neighbor*/
     public void linkUp(String iP, int portNumber){
         Node node = new Node(iP, portNumber);
+        if(neighbors.get(node) != null) {
+            System.out.println("No neighbor at that destination");
+            return;
+        }
         curDv.updateLink(node, Message.LINK_UP);
         neighbors.get(node).restore();
         Message message = new Message(Message.LINK_UP);
         message.setPortNumber(this.getCurDv().getOwner().getPort());
         send(message, iP, portNumber);
+
     }
 
     /*Destroy link and alert neighbor*/
@@ -155,12 +166,11 @@ public class Host {
         neighbors.put(node, new Cost(cost, true));
     }
 
-    public void handleTimeout(DistanceVector distanceVector){
-        Node owner = distanceVector.getOwner();
-        neighbors.get(distanceVector.getOwner()).destroy();
+    public void handleTimeout(Node node){
+        neighbors.get(node).destroy();
         //update all paths with this node as a hop
         for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : curDv){
-            if(e.getKey().equals(owner) || e.getValue().getKey().equals(owner)){
+            if(e.getKey().equals(node) || e.getValue().getKey().equals(node)){
                 curDv.updateLink(e.getKey(), Message.LINK_DOWN);
             }
         }
