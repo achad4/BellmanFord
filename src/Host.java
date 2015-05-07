@@ -24,7 +24,7 @@ public class Host {
             this.vectors = new HashMap<DistanceVector, Date>();
             this.neighbors = new HashMap<Node, Cost>();
             //TODO: Figure out this IP shit!!
-            this.curDv = new DistanceVector( InetAddress.getByName("localhost").getHostAddress(), portNumber);
+            this.curDv = new DistanceVector( InetAddress.getLocalHost().getHostAddress(), portNumber);
             this.timeout = timeout;
             serverSock = new DatagramSocket(curDv.getOwner().getPort());
             clientSocket = new DatagramSocket();

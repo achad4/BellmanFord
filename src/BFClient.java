@@ -30,7 +30,7 @@ public class BFClient {
                         }
                         command = br.readLine();
                     } catch (InterruptedException e) {
-                        System.out.println("ConsoleInputReadTask() cancelled");
+                        continue;
                     }
                     String[] info = command.split(" ");
                     //Message message = new Message(command, user);
