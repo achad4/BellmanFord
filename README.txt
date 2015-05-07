@@ -4,7 +4,7 @@ PA2
 
 Instructions:
 1) Run "make" from within the src directory to compile the code
-2) Run "java BFClient <config>" to start a host
+2) Run "java BFClient <config file name>" to start a host
 
 Commands:
 1) "SHOWRT"
@@ -31,7 +31,7 @@ file.
 6) "CLOSE"
 --Terminated BFClient process.
 
-Design:
+Design Considerations:
 1) Timer
 --I maintain a separate thread to update the distance vector, send updates, and check for
 timed out nodes.  This thread is active every timeout seconds. A separate thread receives all incoming
@@ -47,7 +47,10 @@ than 3*timeout.
 2) Distance Vectors
 --All the distance vector information is encapsulated in my DistanceVector class.  This contains an "owner"
 node, and a hash map of Nodes to pairs of Nodes and Costs.  This is to represent the destination, next hop,
-and cost respectively.  Cost, however, is a class that wraps around the double "weight".  I did this
+and cost respectively.
+
+3) Link cost
+Cost is a class that wraps around the double "weight".  I did this
 so that I could set a flag to determine if the cost is infinite or not.  This way, I can destroy
 and restore links without maintaining additional information about the old cost of the link.
 
