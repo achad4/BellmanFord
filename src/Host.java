@@ -188,7 +188,7 @@ public class Host {
             message.setDestination(node);
             //reached end of file
             if(DATA_SIZE > len) {
-                byte[] lastData = new byte[len-1];
+                byte[] lastData;
                 lastData = Arrays.copyOf(buf, len);
                 message.setLast(true);
                 message.setData(lastData);
@@ -262,7 +262,6 @@ public class Host {
                     in.close();
                     switch(message.getType()){
                         case Message.DV:
-                            System.out.println("Address: "+packet.getAddress().getHostAddress());
                             handleDistanceVector(message.getDv());
                             break;
                         case Message.LINK_UP:
@@ -349,11 +348,6 @@ public class Host {
                 for(DistanceVector d : deadNodes){
                     vectors.remove(d);
                 }
-            }
-
-            public long getDiff(Date date1, Date date2, TimeUnit timeUnit){
-                long diff = date2.getTime() - date1.getTime();
-                return timeUnit.convert(diff,TimeUnit.MILLISECONDS);
             }
         }
         public void run(){
