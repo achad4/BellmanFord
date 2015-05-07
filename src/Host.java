@@ -55,8 +55,6 @@ public class Host {
             this.curDv.put(n, n, weight);
             this.neighbors.put(n, new Cost(weight, true));
         }
-        System.out.println("START:");
-        curDv.showRoute();
         Server serverThread = new Server();
         serverThread.start();
         HeartBeat heartBeatThread = new HeartBeat();
@@ -91,9 +89,8 @@ public class Host {
             Date recieved = vectors.get(distanceVector);
             long diff = getDiff(recieved, new Date(), TimeUnit.SECONDS);
             if(diff > 3*timeout){
-                System.out.println("date: "+recieved.getTime()/1000);
-                System.out.println("diff: "+diff);
-                System.out.println("TIMING OUT LINK: " + distanceVector.getOwner().getPort());
+                System.out.println("TIMING OUT: " + distanceVector.getOwner().getiP()+":"+
+                        distanceVector.getOwner().getPort());
                 handleTimeout(distanceVector);
                 deadNodes.add(distanceVector);
                 continue;
@@ -105,7 +102,6 @@ public class Host {
                 double distToHop = neighbors.get(hop).getWeight();
                 //distance from the node that send the vector to the destination
                 double distFromHop = distanceVector.get(dest).getValue().getWeight();
-                //System.out.println("distFromHop: "+distFromHop + " destination: "+dest.getPort());
                 Pair<Node, Cost> curEntry;
                 if ((curEntry = temp.get(dest)) != null) {
                     double curWeight = curEntry.getValue().getWeight();
@@ -177,7 +173,6 @@ public class Host {
         if((hop = curDv.get(node).getKey()) == null){
             return false;
         }
-        System.out.println("HOP"+hop.getiP()+"\n"+hop.getPort());
         FileInputStream in = new FileInputStream(file);
         int total = 0;
         int len;
@@ -198,7 +193,6 @@ public class Host {
             send(message, hop.getiP(), hop.getPort());
             total += len;
         }
-        System.out.println("TOTAL: "+total);
         return true;
     }
 
@@ -217,6 +211,7 @@ public class Host {
         if((hop = curDv.get(message.getDestination()).getKey()) == null){
             return false;
         }
+        System.out.println("Next hop: "+hop.getiP()+":"+hop.getPort());
         send(message, hop.getiP(), hop.getPort());
         return true;
     }
@@ -274,6 +269,8 @@ public class Host {
                             handleChangeCost(packet.getAddress().getHostAddress(), message.getPortNumber(), message.getCost());
                             break;
                         case Message.TRANSFER:
+                            System.out.println("Packet received\nSource: "+packet.getAddress().getHostAddress()
+                                    +":"+message.getPortNumber());
                             handleTransfer(message);
                             break;
                     }
@@ -322,6 +319,7 @@ public class Host {
 
         private void handleTransfer(Message message){
             Node dest = message.getDestination();
+            System.out.println("Destination: "+dest.getiP()+":"+dest.getPort());
             if(dest.equals(curDv.getOwner())){
                 try {
                     File file = new File(message.getFileName());
