@@ -64,10 +64,14 @@ public class Host {
 
     private ArrayList<DistanceVector> estimateCosts(){
         ArrayList<DistanceVector> deadNodes = new ArrayList<DistanceVector>();
-        for(Node n : neighbors.keySet()){
+        Iterator<Node> it = neighbors.keySet().iterator();
+        while (it.hasNext()){
+            Node n = it.next();
             //check if a neighbor never started
             long diff = getDiff(start, new Date(), TimeUnit.SECONDS);
             if(diff > 3*timeout && (vectors.get(new DistanceVector(n.getiP(), n.getPort())) == null)){
+                //handleTimeout(n);
+                it.remove();
                 handleTimeout(n);
                 continue;
             }
@@ -170,7 +174,7 @@ public class Host {
     }
 
     public void handleTimeout(Node node){
-        neighbors.remove(node);
+        //neighbors.remove(node);
         //update all paths with this node as a hop
         for(java.util.Map.Entry<Node, Pair<Node, Cost>> e : curDv){
             if(e.getKey().equals(node) || e.getValue().getKey().equals(node)){
