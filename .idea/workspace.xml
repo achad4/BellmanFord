@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e14cf4ee-ae7d-4899-8eae-229e05a1b83f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Host.java" afterPath="$PROJECT_DIR$/src/Host.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DistanceVector.java" afterPath="$PROJECT_DIR$/src/DistanceVector.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="BellmanFord.iws" />
@@ -28,20 +28,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="README.txt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="README.txt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1125">
-              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.5798005" vertical-offset="0" max-vertical-offset="1125">
+              <caret line="31" column="30" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Host.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Host.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Host.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.1612903" vertical-offset="2010" max-vertical-offset="5790">
+            <state vertical-scroll-proportion="-8.703704" vertical-offset="875" max-vertical-offset="5790">
               <caret line="74" column="32" selection-start-line="74" selection-start-column="32" selection-end-line="74" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -56,14 +56,14 @@
       <file leaf-file-name="DistanceVector.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DistanceVector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="598" max-vertical-offset="1320">
-              <caret line="77" column="11" selection-start-line="77" selection-start-column="11" selection-end-line="77" selection-end-column="11" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="210" max-vertical-offset="1320">
+              <caret line="61" column="52" selection-start-line="61" selection-start-column="52" selection-end-line="61" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1598#1599#0" expanded="true" />
                 <element signature="e#1648#1649#0" expanded="true" />
-                <element signature="e#2186#2187#0" expanded="true" />
-                <element signature="e#2230#2231#0" expanded="true" />
+                <element signature="e#2187#2188#0" expanded="true" />
+                <element signature="e#2231#2232#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -122,12 +122,12 @@
         <option value="$PROJECT_DIR$/src/config4.txt" />
         <option value="$PROJECT_DIR$/src/config5.txt" />
         <option value="$PROJECT_DIR$/src/config3.txt" />
-        <option value="$PROJECT_DIR$/src/DistanceVector.java" />
         <option value="$PROJECT_DIR$/src/Message.java" />
         <option value="$PROJECT_DIR$/src/BFClient.java" />
         <option value="$PROJECT_DIR$/src/Cost.java" />
-        <option value="$PROJECT_DIR$/README.txt" />
         <option value="$PROJECT_DIR$/src/Host.java" />
+        <option value="$PROJECT_DIR$/src/DistanceVector.java" />
+        <option value="$PROJECT_DIR$/README.txt" />
       </list>
     </option>
   </component>
@@ -608,7 +608,13 @@
       <option name="project" value="LOCAL" />
       <updated>1431046319042</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="fixing CME">
+      <created>1431046833310</created>
+      <option name="number" value="00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1431046833310</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -653,7 +659,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1795422" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1795422" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -702,7 +708,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Mapping out data structures mang" />
     <MESSAGE value="Working on sending link up messages&#10;" />
     <MESSAGE value="File input" />
     <MESSAGE value="attempting BF update method" />
@@ -727,7 +732,8 @@
     <MESSAGE value="CLOSE" />
     <MESSAGE value="readne" />
     <MESSAGE value="NPE with neigbor not starting" />
-    <option name="LAST_COMMIT_MESSAGE" value="NPE with neigbor not starting" />
+    <MESSAGE value="fixing CME" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing CME" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -759,8 +765,8 @@
             <element signature="imports" expanded="true" />
             <element signature="e#1598#1599#0" expanded="true" />
             <element signature="e#1648#1649#0" expanded="true" />
-            <element signature="e#2186#2187#0" expanded="true" />
-            <element signature="e#2230#2231#0" expanded="true" />
+            <element signature="e#2187#2188#0" expanded="true" />
+            <element signature="e#2231#2232#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -808,8 +814,8 @@
             <element signature="imports" expanded="true" />
             <element signature="e#1598#1599#0" expanded="true" />
             <element signature="e#1648#1649#0" expanded="true" />
-            <element signature="e#2186#2187#0" expanded="true" />
-            <element signature="e#2230#2231#0" expanded="true" />
+            <element signature="e#2187#2188#0" expanded="true" />
+            <element signature="e#2231#2232#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -872,20 +878,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DistanceVector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="845" max-vertical-offset="1320">
-          <caret line="77" column="11" selection-start-line="77" selection-start-column="11" selection-end-line="77" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1598#1599#0" expanded="true" />
-            <element signature="e#1648#1649#0" expanded="true" />
-            <element signature="e#2186#2187#0" expanded="true" />
-            <element signature="e#2230#2231#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Cost.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
@@ -894,17 +886,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.txt">
+    <entry file="file://$PROJECT_DIR$/src/DistanceVector.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1125">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="210" max-vertical-offset="1320">
+          <caret line="61" column="52" selection-start-line="61" selection-start-column="52" selection-end-line="61" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1598#1599#0" expanded="true" />
+            <element signature="e#1648#1649#0" expanded="true" />
+            <element signature="e#2187#2188#0" expanded="true" />
+            <element signature="e#2231#2232#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Host.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.1612903" vertical-offset="2010" max-vertical-offset="5790">
+        <state vertical-scroll-proportion="-8.703704" vertical-offset="875" max-vertical-offset="5790">
           <caret line="74" column="32" selection-start-line="74" selection-start-column="32" selection-end-line="74" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -912,6 +910,14 @@
             <element signature="e#1191#1192#0" expanded="true" />
             <element signature="e#2262#2278#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5798005" vertical-offset="0" max-vertical-offset="1125">
+          <caret line="31" column="30" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
