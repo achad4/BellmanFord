@@ -69,6 +69,7 @@ public class Host {
             long diff = getDiff(start, new Date(), TimeUnit.SECONDS);
             if(diff > 3*timeout && (vectors.get(new DistanceVector(n.getiP(), n.getPort())) == null)){
                 handleTimeout(n);
+                continue;
             }
             //poison reversal
             DistanceVector temp = new DistanceVector(curDv.getOwner().getiP(), curDv.getOwner().getPort());
